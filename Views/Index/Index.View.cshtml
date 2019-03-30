@@ -2,23 +2,39 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">UserId</th>
+      <th scope="col">Title</th>
+      <th scope="col">Content</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td></td>
-    </tr>
+  <tbody id="tableContent">
   </tbody>
 </table>
 
 <button id="loadMore" type="button" class="btn btn-outline-primary">Load more Data</button>
 
 @section Scripts {
+  
+  <script>
 
+    // diese werte merken wir uns - vor allem skip
+    let skip = 0;
+    let take = 5;
+
+    // wenn button clicked
+    $('#loadMore').on('click', c => {
+      
+      // daten von /data holen
+      $.getJSON(`/data?take=${take}&skip=${skip}`, (data) => {
+        
+        // 5 holen -> 5 skippen, 5 holen -> 10 skippen, ...
+        skip += take;
+
+        // geholte daten in die tabelle einfügen
+        data.forEach(el => {
+          $('#tableContent').append(`<tr><th scope="row">#${el.id}</th><td>${el.userId}</td><td>${el.title}</td><td>${el.body}</td></tr>`)
+        });
+      })
+    })
+  </script>
 }
